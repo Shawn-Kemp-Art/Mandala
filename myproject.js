@@ -84,6 +84,7 @@ var testingGo = new URLSearchParams(window.location.search).get('testing');// Ru
 
 var frC = R.random_int(1, 3); //random frame color white, mocha, or rainbow
 var orient=R.random_int(1, 4); // decide on orientation 
+var circular=R.random_int(1, 2); // is it circular 
 //orient=2;
 var halfsize = R.random_int(1, 5);
 
@@ -102,7 +103,7 @@ var scale = 2;
 var ratio = 1/scale;//use 1/4 for 32x40 - 1/3 for 24x30 - 1/2 for 16x20 - 1/1 for 8x10
 
 var minOffset = ~~(7*ratio); //this is aproximatly .125"
-var framewidth = ~~(R.random_int(50, 50)*scale); 
+var framewidth = ~~(R.random_int(25, 50)*scale); 
 //var framewidth = 50; 
     if (qfw){framewidth=qfw};
 
@@ -143,7 +144,7 @@ if (qo=="w"){wide = h;high = w;orientation="Landscape";};
 if (qo=="s"){wide = w;high = w;orientation="Square";};
 if (qo=="t"){wide = w;high = h;orientation="Portrait";};
 console.log(orientation+': '+~~(wide/100/ratio)+' x '+~~(high/100/ratio))   
-
+if(circular==2 && orientation=="Square"){console.log('circular')};
 
 //setup the project variables
 
@@ -303,7 +304,7 @@ for (z = 0; z < stacks; z++) {
 
         }
         
-    frameIt(z);// finish the layer with a final frame cleanup 
+    if (orientation=="Square" && circular==2){frameIt(z,1);} else {frameIt(z,0);}// finish the layer with a final frame cleanup 
 
     cutMarks(z);
     hanger(z);// add cut marks and hanger holes
@@ -609,10 +610,10 @@ function solid(z){
 
 
 
-function frameIt(z){
+function frameIt(z,round){
         //Trim to size
         var outsideframe = new Path.Rectangle(new Point(0, 0),new Size(wide, high), framradius)
-        //var outsideframe = new Path.Circle(new Point(wide/2, wide/2),wide/2);
+        if (round==1){var outsideframe = new Path.Circle(new Point(wide/2, wide/2),wide/2)};
         sheet[z] = outsideframe.intersect(sheet[z]);
         outsideframe.remove();
         project.activeLayer.children[project.activeLayer.children.length-2].remove();
@@ -620,8 +621,8 @@ function frameIt(z){
         //Make sure there is still a solid frame
         var outsideframe = new Path.Rectangle(new Point(0, 0),new Size(wide, high), framradius)
         var insideframe = new Path.Rectangle(new Point(framewidth, framewidth),new Size(wide-framewidth*2, high-framewidth*2)) 
-        //var outsideframe = new Path.Circle(new Point(wide/2, wide/2),wide/2);
-        //var insideframe = new Path.Circle(new Point(wide/2, wide/2),wide/2-framewidth);
+        if (round==1){var outsideframe = new Path.Circle(new Point(wide/2, wide/2),wide/2);}
+        if (round==1){var insideframe = new Path.Circle(new Point(wide/2, wide/2),wide/2-framewidth);}
 
         var frame = outsideframe.subtract(insideframe);
         outsideframe.remove();insideframe.remove();
