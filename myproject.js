@@ -591,8 +591,8 @@ function cut(z,s){
 function drawFrame(z){
     var outsideframe = new Path.Rectangle(new Point(0, 0),new Size(wide, high), framradius)
     var insideframe = new Path.Rectangle(new Point(framewidth, framewidth),new Size(wide-framewidth*2, high-framewidth*2)) 
-    //var outsideframe = new Path.Circle(new Point(wide/2, wide/2),wide/2);
-    //var insideframe = new Path.Circle(new Point(wide/2, wide/2),wide/2-framewidth);
+    if (orientation=="Square" && circular==2){var outsideframe = new Path.Circle(new Point(wide/2, wide/2),wide/2);}
+    if (orientation=="Square" && circular==2){var insideframe = new Path.Circle(new Point(wide/2, wide/2),wide/2-framewidth);}
 
 
     sheet[z] = outsideframe.subtract(insideframe);
