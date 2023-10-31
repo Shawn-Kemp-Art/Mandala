@@ -126,7 +126,7 @@ var woodframe = new Path();var framegap = new Path();
 var petalspiky = R.random_int(5, 15);
 
 
-numofcolors = R.random_int(2, stacks);; //Sets the number of colors to pick for the pallete
+numofcolors = R.random_int(2, 4);; //Sets the number of colors to pick for the pallete
 //numofcolors = $fx.getParam("number_colors");
 if (qc){numofcolors = qc};
 console.log(numofcolors+" colors");
@@ -341,7 +341,7 @@ for (z = 0; z < stacks; z++) {
     $fx.features(features);
     //$fx.preview();
 
-    floatingframe();
+    if (orientation=="Square" && circular==2){}else{floatingframe();}
      upspirestudio(features); //#render and send features to upspire.studio
 
 
